@@ -1,0 +1,111 @@
+Archivo generado para observar las peticiones y respuestas especificas que se vayan generando con el uso de este cliente:
+
+A continuacion se decriben los tipos de datos en formato XML-RPC
+boolean -- equivalente a bool de python
+int -- equivalente a int de python, rango de (2^64)-1
+double o float -- equivalente a float de python, los valores reciben la etiqueta <double>
+string -- equivalente a str de python
+array -- equivalente a list o tuple de python, estos parametros son retornados como listas
+struct -- equivalente a los diccionarios de python, las llaves deben ser de tipo <string> y los valores cualquier tipo aqui mencionado
+dateTime.iso8601 -- equivalente a DateTime o datetime.datetime de python
+base64 -- equivalente a Binary, bytes o bytearray de python
+nil -- equivalente a la constante None de python
+bigdecimal -- equivalente a decimal.Decimal de python, este tipo solo puede ser valor de retorno
+
+
+Formato de la peticion suma: 
+<?xml version='1.0'?>
+<methodCall>
+<methodName>suma</methodName>
+<params>
+<param>
+<value><int>2</int></value>
+</param>
+<param>
+<value><int>2</int></value>
+</param>
+</params>
+</methodCall>
+Formato de la respuesta de la peticion:
+<?xml version='1.0'?>
+<methodResponse>
+<params>
+<param>
+<value><int>4</int></value>
+</param>
+</params>
+</methodResponse>
+
+
+Formato de la peticion resta: 
+<?xml version='1.0'?>
+<methodCall>
+<methodName>resta</methodName>
+<params>
+<param>
+<value><int>2</int></value>
+</param>
+<param>
+<value><int>1</int></value>
+</param>
+</params>
+</methodCall>
+Formato de la respuesta de la peticion:
+<?xml version='1.0'?>
+<methodResponse>
+<params>
+<param>
+<value><int>1</int></value>
+</param>
+</params>
+</methodResponse>
+
+
+Formato de la peticion multiplicacion: 
+<?xml version='1.0'?>
+<methodCall>
+<methodName>multiplicacion</methodName>
+<params>
+<param>
+<value><int>3</int></value>
+</param>
+<param>
+<value><int>3</int></value>
+</param>
+</params>
+</methodCall>
+Formato de la respuesta de la peticion:
+<?xml version='1.0'?>
+<methodResponse>
+<params>
+<param>
+<value><int>9</int></value>
+</param>
+</params>
+</methodResponse>
+
+
+Formato de la peticion division: 
+<?xml version='1.0'?>
+<methodCall>
+<methodName>division</methodName>
+<params>
+<param>
+<value><int>10</int></value>
+</param>
+<param>
+<value><int>2</int></value>
+</param>
+</params>
+</methodCall>
+Formato de la respuesta de la peticion:
+<?xml version='1.0'?>
+<methodResponse>
+<params>
+<param>
+<value><double>5.0</double></value>
+</param>
+</params>
+</methodResponse>
+
+
