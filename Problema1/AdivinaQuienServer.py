@@ -5,23 +5,24 @@ import sys
 from hiloServidor import hiloServidor
 import threading
 import time
+from Personajes import personajes
 
 
 def servirPorSiempre(socketTcp,condition):
+    tablero=None
     try:
         while True:
             client_conn, client_addr = socketTcp.accept()
             if (threading.active_count()-1)<int(sys.argv[3]):
                 if threading.active_count()-1==0:
                     #Crea un nuevo tablero para jugar
-                    pass
+                    tablero=personajes()
                 print("Conectado a", client_addr)
                 client_conn.send("Bienvenido Usuario".encode())
                 time.sleep(0.5)
-                client_conn.send("Dime tu nombre: ".encode())
+                client_conn.send("Escribe tu nombre: ".encode())
                 nombre=client_conn.recv(1024).decode()
-                #FIXME: Falta enviar un objeto de tipo Tablero que contenga los personajes y jugadas realizadas
-                nuevoCliente = hiloServidor(client_conn,condition,int(sys.argv[3]),nombre)
+                nuevoCliente = hiloServidor(client_conn,condition,int(sys.argv[3]),nombre,tablero)
                 nuevoCliente.start()
             else:
                 client_conn.send("Servidor lleno".encode())
