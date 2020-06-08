@@ -21,6 +21,19 @@ class hiloServidor(threading.Thread):
         time.sleep(0.5)
         self.cliente.send(str("Jugadores actualmente conectados: "+ str(threading.active_count()-1)).encode())
         self.bandera=True
+    def bienvenidaUsuario(self):
+        self.cliente.send(str("Bienvenido "+self.name+"\n").encode())
+        self.cliente.send("Las reglas del juego son las siguientes:".encode())
+        time.sleep(0.1)
+        self.cliente.send("Para bloquear a un personaje y evitar que se muestre su descripción di exactamente esto: 'Bloquea al personaje (nombre del personaje)'\n".encode())
+        self.cliente.send("Para salir del juego di: 'quiero salir'\n".encode())
+        time.sleep(0.1)
+        self.cliente.send("Para realizar una jugada debes de mencionar al menos la caracteristica y el valor de ella, por ejemplo:\n".encode())
+        self.cliente.send("El personaje tiene PELO color NEGRO, siendo pelo y negro lo minimo que tienes que decir\n".encode())
+        time.sleep(0.1)
+        self.cliente.send("Cualquier otra cosa que digas sera tomada como un comando incorrecto y perderas el turno\n".encode())
+        self.cliente.send("Disfruta del juego\n".encode())
+        time.sleep(0.1)
     
     def imprimeTablero(self):
         for key in self.tablero.personajes:
@@ -42,9 +55,11 @@ class hiloServidor(threading.Thread):
                 with self.ventana:
                     if not(self.juegoTerminado()):
                         if ((threading.active_count()-1)<self.MAX_Conexiones and self.bandera==False):
+                            self.bienvenidaUsuario()
                             self.jugadoresIncompletos()
                             self.ventana.wait()
                         if((threading.active_count()-1==self.MAX_Conexiones and self.MAX_Conexiones>1) and self.bandera==False):
+                            self.bienvenidaUsuario()
                             self.cliente.send("Todos los jugadores se han conectado, ahora espera tu turno".encode())
                             self.ventana.notify()
                             self.bandera=True
