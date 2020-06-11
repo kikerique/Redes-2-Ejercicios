@@ -65,11 +65,13 @@ class handlerJugadas:
         data = self.cliente.recv(32)
         print("Bytes del archivo: "+data.decode())
         f=open(path.join(path.dirname(path.realpath(__file__)), self.name+"-jugada.wav"),"wb")
-        datos=self.cliente.recv(2048)
-        while datos:
-            f.write(datos)
+        leidos=0
+        while leidos<int(data.decode()):
             datos=self.cliente.recv(2048)
+            f.write(datos)
+            leidos+=2048
         f.close()
+        print("Archivo guardado")
         return self.speechRecognizer()
     def limpiaJugada(self,comando):
         resultado=comando

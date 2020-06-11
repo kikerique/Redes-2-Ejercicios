@@ -36,8 +36,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
                 datos=f.read(2048)
                 while datos:
                     TCPClientSocket.send(datos)
-                    time.sleep(0.1)
                     datos=f.read(2048)
+            print("Archivo enviado")
     	if data.decode()=='':
     		print("Error, saliendo")
     		break
