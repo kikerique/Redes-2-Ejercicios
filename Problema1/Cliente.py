@@ -32,7 +32,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
             t=os.stat(request+"-microphone-results.wav").st_size
             TCPClientSocket.send(str(t).encode())
             time.sleep(1)
-            TCPClientSocket.send(audio.get_wav_data())
+            with open(request+"-microphone-results.wav", "rb") as f:
+                datos=f.read(2048)
+                while datos:
+                    TCPClientSocket.send(datos)
+                    time.sleep(0.1)
+                    datos=f.read(2048)
     	if data.decode()=='':
     		print("Error, saliendo")
     		break

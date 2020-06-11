@@ -62,14 +62,13 @@ class handlerJugadas:
         time.sleep(0.5)
         self.cliente.send("Juega:".encode())
         time.sleep(0.5)  
-        data = self.cliente.recv(1024)
-        #print("Bytes del archivo: "+data.decode())
+        data = self.cliente.recv(32)
+        print("Bytes del archivo: "+data.decode())
         f=open(path.join(path.dirname(path.realpath(__file__)), self.name+"-jugada.wav"),"wb")
-        leidos=0
-        while leidos<int(data):
-            escribir=self.cliente.recv(2048)
-            f.write(escribir)
-            leidos+=2048
+        datos=self.cliente.recv(2048)
+        while datos:
+            f.write(datos)
+            datos=self.cliente.recv(2048)
         f.close()
         return self.speechRecognizer()
     def limpiaJugada(self,comando):
@@ -103,16 +102,15 @@ class handlerJugadas:
             return (3,comando)
     def speechRecognizer(self):
         #Funcion encargada de pasar de un archivo de audio a texto
-        #print("INICIANDO speechRecognizer")
+        print("INICIANDO speechRecognizer")
         AUDIO_FILE = path.join(path.dirname(path.realpath(__file__)), self.name+"-jugada.wav")
         r = sr.Recognizer()
         with sr.AudioFile(AUDIO_FILE) as source:
             audio = r.record(source)  # read the entire audio file
-        #print("datos del audio recogidos")
+        print("datos del audio recogidos")
         try:
             text=r.recognize_ibm(audio)
-            #print("finalizo la traduccion")
-            
+            print("finalizo la traduccion")
             return text
         except sr.UnknownValueError:
             return "Audio Ilegible"
