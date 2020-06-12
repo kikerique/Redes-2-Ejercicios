@@ -27,17 +27,20 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
             with sr.Microphone() as source:
                 audio=r.listen(source)
             print("Tu jugada se ha guardado")
-            with open(request+"-microphone-results.wav", "wb") as f:
-                f.write(audio.get_wav_data())
-            t=os.stat(request+"-microphone-results.wav").st_size
+            datos=audio.get_wav_data()
+            t=len(datos)
             TCPClientSocket.send(str(t).encode())
             time.sleep(1)
-            with open(request+"-microphone-results.wav", "rb") as f:
-                datos=f.read(2048)
-                while datos:
-                    TCPClientSocket.send(datos)
-                    datos=f.read(2048)
-            print("Archivo enviado")
+            enviados=0
+            while enviados<t:
+                res=TCPClientSocket.send(datos[enviados:])
+                if res == 0:
+                    print("conexión interrumpida")
+                    break
+                enviados+=res
+            time.sleep(0.1)
+            TCPClientSocket.send("Archivo enviado".encode())
+            #print("Archivo enviado")
     	if data.decode()=='':
     		print("Error, saliendo")
     		break

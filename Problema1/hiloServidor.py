@@ -69,7 +69,7 @@ class hiloServidor(threading.Thread):
                         numero,descripcion=self.handler.dimeComando(jugada.lower())
                         if numero==2:
                             while numero==2:
-                                self.cliente.send(str("Este fue tu comando "+jugada).encode())
+                                #self.cliente.send(str("Este fue tu comando "+jugada).encode())
                                 self.imprimeTablero()
                                 jugada=self.handler.pideJugada()
                                 numero,descripcion=self.handler.dimeComando(jugada.lower())
@@ -102,7 +102,7 @@ class hiloServidor(threading.Thread):
                         time.sleep(0.1)
                         break
             try:
-                archivo=path.join(path.dirname(path.realpath(__file__)), self.name+"-jugada.wav")
+                archivo=str(self.name+"-jugada.wav")
                 os.remove(archivo)
             except:
                 pass
