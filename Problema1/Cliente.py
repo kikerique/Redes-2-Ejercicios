@@ -40,7 +40,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
                 enviados+=res
             time.sleep(0.1)
             TCPClientSocket.send("Archivo enviado".encode())
-            #print("Archivo enviado")
+            print("Archivo enviado")
     	if data.decode()=='':
     		print("Error, saliendo")
     		break
