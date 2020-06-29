@@ -148,7 +148,7 @@ blockchain.create_genesis_block()
 
 # the address to other participating members of the network
 peers = set()
-
+users={'user':'pass123', 'jluis':'garcia', 'jenrique':'romero'}
 
 # endpoint to submit a new transaction. This will be used by
 # our application to add new data (posts) to the blockchain
@@ -163,6 +163,14 @@ def new_transaction():
     if not(tx_data.get("timestamp")):
         tx_data["timestamp"] = time.time()
     #announce_new_tx(tx_data)
+    if tx_data.get("author") in users.keys():
+        if tx_data.get("pass") == users[tx_data.get("author")]:
+            #print("sucess")
+            pass
+        else:
+            return "Invalid password", 400
+    else:
+        return "Invalid user", 400
     blockchain.add_new_transaction(tx_data)
     announce_new_tx(tx_data)
     return "Success", 201
