@@ -74,7 +74,7 @@ class handlerJugadas:
                 pass
             f.write(datos)
         f.close()
-        print("Archivo recibido")
+        #print("Archivo recibido")
         #print("Archivo guardado")
         return self.speechRecognizer()
     def limpiaJugada(self,comando):

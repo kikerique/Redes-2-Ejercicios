@@ -20,8 +20,8 @@ class personajes:
 	
     correcto="" #Nombre del personaje a adivinar (se escoge al azar al terminar de llenar el diccionario de personajes)
     ganador=False
-    ultimaJugada=""
-
+    ultimaJugada=[]
+    turnos=[]
     def __init__(self):
         #Constructor de la clase personajes aquí se llenará el diccionario personajes al azar
         self.correcto=self.nombres[int(random.random()*len(self.nombres))]

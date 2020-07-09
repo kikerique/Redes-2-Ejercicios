@@ -12,6 +12,7 @@ class hiloServidor(threading.Thread):
         self.ventana=condition
         self.MAX_Conexiones=jugadores
         self.tablero=personajes
+        self.tablero.turnos.append(nombre)
         self.name=nombre
         self.bandera=False
 
@@ -43,7 +44,7 @@ class hiloServidor(threading.Thread):
                 self.cliente.send(str(string + ":\n").encode())
                 time.sleep(0.1)
         if self.tablero.ultimaJugada!=None:
-            self.cliente.send(self.tablero.ultimaJugada.encode())
+            self.cliente.send(('\n'.join(self.tablero.ultimaJugada)).encode())
     def juegoTerminado(self):
         return self.tablero.ganador
 
@@ -64,6 +65,16 @@ class hiloServidor(threading.Thread):
                             self.ventana.notify()
                             self.bandera=True
                             self.ventana.wait()
+                        if (threading.active_count()-1)>1:
+                            actual=self.tablero.turnos[0]
+                            while actual!=self.name:
+                                self.ventana.notify()
+                                self.ventana.wait()
+                                actual=self.tablero.turnos[0]
+                        try:
+                            self.tablero.turnos.pop(0)
+                        except:
+                            pass
                         self.imprimeTablero()
                         jugada=self.handler.pideJugada()
                         numero,descripcion=self.handler.dimeComando(jugada.lower())
@@ -87,15 +98,16 @@ class hiloServidor(threading.Thread):
                                 break
                             else:
                                 if respuesta=="No, sigue intentando":
-                                    self.tablero.ultimaJugada=str("Ultima Jugada: Intento de adivinar el personaje de parte del jugador "+self.name)
+                                    self.tablero.ultimaJugada.append(str("Ultima Jugada: Intento de adivinar el personaje de parte del jugador "+self.name))
                                 else:    
-                                    self.tablero.ultimaJugada=str("Ultima Jugada: "+jugada+" respuesta: "+respuesta)
+                                    self.tablero.ultimaJugada.append(str("Jugada: "+jugada+" respuesta: "+respuesta))
                                 self.cliente.send(str("Tu jugada fue esta: "+jugada).encode())
                                 self.cliente.send(str("Esta es la respuesta: "+respuesta).encode())
                         time.sleep(0.5)
                         self.cliente.send("Tu turno ha terminado, espera tu turno".encode())
                         self.ventana.notify()
                         if (threading.active_count()-1)>1:
+                            self.tablero.turnos.append(self.name)
                             self.ventana.wait()
                     else:
                         self.cliente.send(str("El juego ha terminado, ha ganado el jugador "+ self.tablero.ganador).encode())
